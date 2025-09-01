@@ -77,11 +77,14 @@ macro_rules! html {
     ($tag:ident) => {
         format!("<{}></{}>", stringify!($tag), stringify!($tag))
     };
-    ($tag:ident { $($attr:ident="$val:expr"),* }) => {
+    ($tag:ident { $($attr:ident = $val:expr),* }) => {
         {
             let mut result = format!("<{}", stringify!($tag));
             $(result.push_str(&format!(" {}=\"{}\"", stringify!($attr), $val));)*
-            result.push_str(&format!("</{}}", stringify!($tag)));
+            result.push_str(">");
+            result.push_str("</");
+            result.push_str(stringify!($tag));
+            result.push_str(">");
             result
         }
     };
@@ -94,80 +97,80 @@ fn main() {
     // 测试say_hello宏
     say_hello!();
     say_hello!("Rust");
-    
+
     // 测试vec2宏
     let v1: Vec<i32> = vec2![];
     let v2 = vec2![1, 2, 3, 4, 5];
-    let v3 = vec2![1, 2, 3, 4, 5,];  // 支持尾部逗号
-    
+    let v3 = vec2![1, 2, 3, 4, 5,]; // 支持尾部逗号
+
     println!("v1: {:?}", v1);
     println!("v2: {:?}", v2);
     println!("v3: {:?}", v3);
-    
+
     // 测试my_assert宏
     my_assert!(1 + 1 == 2);
     // 取消下面的注释会导致程序崩溃
     // my_assert!(1 + 1 == 3, "数学计算错误");
-    
+
     // 测试log宏
     log!(info, "这是一条信息日志");
     log!(warn, "这是一条警告日志");
     log!(error, "这是一条错误日志，编号: {}", 404);
-    
+
     // 测试html宏
     let div1 = html!(div);
     let div2 = html!(div { class="container", id="main" });
     let div3 = html!(div html!(p "Hello World"));
-    
+
     println!("div1: {}", div1);
     println!("div2: {}", div2);
     println!("div3: {}", div3);
-    
+
     // 7. 标准库中的常用宏
     // println! - 打印到标准输出并换行
     println!("这是println!宏");
-    
+
     // format! - 创建格式化的字符串
     let formatted = format!("这是一个{}字符串", "格式化的");
     println!("{}", formatted);
-    
+
     // vec! - 创建向量
     let v = vec![1, 2, 3, 4, 5];
     println!("vec!: {:?}", v);
-    
+
     // assert! - 断言条件为真
     assert!(v.len() == 5);
-    
+
     // Option和Result相关宏
     let some_value: Option<i32> = Some(5);
     let none_value: Option<i32> = None;
-    
+
     // unwrap!宏（简化版）
     let value = some_value.unwrap();
     println!("unwrap后的 value: {}", value);
-    
+
     // 取消下面的注释会导致程序崩溃
     // let value = none_value.unwrap();
-    
+
     // 8. 更多宏的高级特性
     // 宏可以捕获变量
     let x = 5;
     let y = 10;
     macro_rules! add_values {
         () => {
-            x + y  // 捕获外部变量x和y
+            x + y // 捕获外部变量x和y
         };
     }
-    
+
     println!("x + y = {}", add_values!());
-    
+
     // 宏可以递归调用
     macro_rules! count {
         () => {0};
         ($x:expr) => {1};
         ($x:expr, $($xs:expr),*) => {1 + count!($($xs),*)};
     }
-    
+
     println!("参数数量: {}", count!(1, 2, 3, 4, 5));
 }
 
@@ -198,7 +201,7 @@ fn main() {
 // - 减少重复代码
 // - 提供编译时元编程能力
 // - 可以创建DSL（领域特定语言）
-// 
+//
 // 缺点：
 // - 语法复杂，较难理解
 // - 编译错误信息可能不友好

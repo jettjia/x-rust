@@ -80,3 +80,7 @@ path = "15_unsafe.rs"
 [[bin]]
 name = "16_multithreading"
 path = "16_multithreading.rs"
+
+[[bin]]
+name = "17_smart_pointers"
+path = "17_smart_pointers.rs"

@@ -4,7 +4,7 @@
 
 // 导入必要的模块
 use std::fmt;
-use std::iter::Iterator;
+use std::iter::Iterator as StdIterator;
 use std::ops::Add;
 
 // 1. 定义Trait
@@ -12,12 +12,12 @@ use std::ops::Add;
 pub trait Summary {
     // 方法声明
     fn summarize(&self) -> String;
-    
+
     // 默认实现的方法
     fn summarize_author(&self) -> String {
         String::from("未知作者")
     }
-    
+
     // 使用其他Trait方法的默认实现
     fn summarize_with_author(&self) -> String {
         format!("{} - {}", self.summarize(), self.summarize_author())
@@ -45,7 +45,7 @@ impl Summary for NewsArticle {
     fn summarize(&self) -> String {
         format!("{}, by {} ({})", self.headline, self.author, self.location)
     }
-    
+
     // 覆盖默认实现
     fn summarize_author(&self) -> String {
         format!("作者: {}", self.author)
@@ -109,7 +109,7 @@ struct Point {
 // 实现Add trait来重载+运算符
 impl Add for Point {
     type Output = Point;
-    
+
     fn add(self, other: Point) -> Point {
         Point {
             x: self.x + other.x,
@@ -125,7 +125,7 @@ struct Meters(u32);
 // 为不同类型实现Add trait
 impl Add<Meters> for Millimeters {
     type Output = Millimeters;
-    
+
     fn add(self, other: Meters) -> Millimeters {
         Millimeters(self.0 + (other.0 * 1000))
     }
@@ -161,14 +161,14 @@ impl Formattable for f64 {
 impl<T: Formattable> Formattable for Vec<T> {
     fn format(&self) -> String {
         let mut result = String::from("[");
-        
+
         for (i, item) in self.iter().enumerate() {
             if i > 0 {
                 result.push_str(", ");
             }
             result.push_str(&item.format());
         }
-        
+
         result.push_str("]");
         result
     }
@@ -182,8 +182,8 @@ fn print_formatted<T: Formattable>(item: &T) {
 // 9. 关联类型
 // 在trait中定义关联类型，可以使trait更灵活
 pub trait Iterator {
-    type Item;  // 关联类型
-    
+    type Item; // 关联类型
+
     fn next(&mut self) -> Option<Self::Item>;
 }
 
@@ -202,10 +202,10 @@ impl Counter {
 // 为Counter实现Iterator trait
 impl Iterator for Counter {
     type Item = u32;
-    
+
     fn next(&mut self) -> Option<Self::Item> {
         self.count += 1;
-        
+
         if self.count <= self.max {
             Some(self.count)
         } else {
@@ -242,8 +242,12 @@ pub struct SelectBox {
 
 impl Draw for SelectBox {
     fn draw(&self) {
-        println!("绘制选择框 ({}x{}) 包含 {} 个选项", 
-                 self.width, self.height, self.options.len());
+        println!(
+            "绘制选择框 ({}x{}) 包含 {} 个选项",
+            self.width,
+            self.height,
+            self.options.len()
+        );
     }
 }
 
@@ -268,57 +272,62 @@ fn main() {
         reply: false,
         retweet: false,
     };
-    
+
     let article = NewsArticle {
         headline: String::from("Penguins win the Stanley Cup Championship!"),
         location: String::from("Pittsburgh, PA, USA"),
         author: String::from("Iceburgh"),
-        content: String::from("The Pittsburgh Penguins once again are the best hockey team in the NHL."),
+        content: String::from(
+            "The Pittsburgh Penguins once again are the best hockey team in the NHL.",
+        ),
     };
-    
+
     println!("推文摘要: {}", tweet.summarize());
     println!("文章摘要: {}", article.summarize());
     println!("带作者的文章摘要: {}", article.summarize_with_author());
-    
+
     // 测试trait约束函数
     notify(&tweet);
     notify(&article);
-    
+
     // 测试返回实现了trait的类型
     let summarizable = returns_summarizable();
     println!("返回的可摘要对象: {}", summarizable.summarize());
-    
+
     // 测试运算符重载
-    assert_eq!(Point { x: 1, y: 0 } + Point { x: 2, y: 3 }, Point { x: 3, y: 3 });
-    
+    assert_eq!(
+        Point { x: 1, y: 0 } + Point { x: 2, y: 3 },
+        Point { x: 3, y: 3 }
+    );
+
     let mm = Millimeters(1200);
     let m = Meters(5);
     let combined = mm + m;
     println!("合并后的长度: {}毫米", combined.0);
-    
+
     // 测试派生trait
     let num1 = Number { value: 42 };
     let num2 = Number { value: 42 };
     let num3 = num1.clone();
-    
+
     println!("num1 == num2: {}", num1 == num2);
     println!("num1 == num3: {}", num1 == num3);
     println!("num1: {:?}", num1);
-    
+
     // 测试Formattable trait
     print_formatted(&42);
     print_formatted(&3.14);
-    
+
     let v = vec![1, 2, 3, 4, 5];
     print_formatted(&v);
-    
+
     // 测试迭代器trait
     let mut counter = Counter::new(5);
     println!("迭代计数器:");
     while let Some(count) = counter.next() {
         println!("计数: {}", count);
     }
-    
+
     // 测试特征对象
     let screen = Screen {
         components: vec![
@@ -328,7 +337,7 @@ fn main() {
                 options: vec![
                     String::from("Yes"),
                     String::from("Maybe"),
-                    String::from("No")
+                    String::from("No"),
                 ],
             }),
             Box::new(Button {
@@ -338,7 +347,7 @@ fn main() {
             }),
         ],
     };
-    
+
     println!("运行屏幕组件:");
     screen.run();
 }

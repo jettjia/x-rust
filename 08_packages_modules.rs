@@ -10,28 +10,28 @@
 // 定义一个模块
 mod front_of_house {
     // 模块可以嵌套
-    mod hosting {
+    pub mod hosting {
         // 在Rust中，默认情况下，函数、类型、模块和常量是私有的
         // 使用pub关键字使其变为公有的
         pub fn add_to_waitlist() {
             // 可以访问同一模块内的私有函数
             seat_at_table();
         }
-        
+
         fn seat_at_table() {
             println!("安排座位");
         }
     }
-    
-    mod serving {
+
+    pub mod serving {
         pub fn take_order() {
             println!("记录订单");
         }
-        
+
         pub fn serve_order() {
             println!("提供食物");
         }
-        
+
         pub fn take_payment() {
             println!("收取付款");
         }
@@ -43,9 +43,9 @@ pub mod back_of_house {
     // 结构体的字段默认是私有的
     pub struct Breakfast {
         pub toast: String,
-        seasonal_fruit: String,  // 私有字段
+        seasonal_fruit: String, // 私有字段
     }
-    
+
     // 为公共结构体实现方法
     impl Breakfast {
         // 构造函数通常是关联函数，命名为new
@@ -55,19 +55,19 @@ pub mod back_of_house {
                 seasonal_fruit: String::from("蓝莓"),
             }
         }
-        
+
         // 公共方法可以访问私有字段
         pub fn fruit(&self) -> &str {
             &self.seasonal_fruit
         }
     }
-    
+
     // 枚举的所有变体默认都是公有的
     pub enum Appetizer {
         Soup,
         Salad,
     }
-    
+
     // 公共枚举的方法
     impl Appetizer {
         pub fn order(self) {
@@ -89,29 +89,29 @@ use crate::back_of_house::Breakfast as MorningMeal;
 fn main() {
     // 通过完整路径调用函数
     crate::front_of_house::hosting::add_to_waitlist();
-    
+
     // 通过引入的路径调用函数
     hosting::add_to_waitlist();
-    
+
     // 创建结构体实例
     let mut meal = MorningMeal::new(String::from("全麦吐司"));
     println!("早餐吐司类型: {}", meal.toast);
     println!("早餐水果: {}", meal.fruit());
-    
+
     // 尝试修改私有字段会导致编译错误
     // meal.seasonal_fruit = String::from("草莓");
-    
+
     // 可以修改公共字段
     meal.toast = String::from("白吐司");
     println!("修改后的吐司类型: {}", meal.toast);
-    
+
     // 使用枚举
     let order1 = back_of_house::Appetizer::Soup;
     order1.order();
-    
+
     let order2 = back_of_house::Appetizer::Salad;
     order2.order();
-    
+
     // 调用模块中的其他函数
     serve_customer();
 }
@@ -120,10 +120,10 @@ fn main() {
 fn serve_customer() {
     // 注意：此函数在根模块中定义，因此可以直接访问其他根模块中的项
     hosting::add_to_waitlist();
-    
+
     let meal = MorningMeal::new(String::from("黑麦吐司"));
     println!("为顾客提供: {}", meal.toast);
-    
+
     // 使用crate关键字从根模块开始访问
     crate::front_of_house::serving::take_order();
     crate::front_of_house::serving::serve_order();

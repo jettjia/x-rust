@@ -24,6 +24,7 @@
 | `14_macros.rs`                 | 宏                 | 介绍声明宏、过程宏和标准库中常用宏的使用                   |
 | `15_unsafe.rs`                 | unsafe代码         | 介绍unsafe块、裸指针、extern函数和内存安全相关概念         |
 | `16_multithreading.rs`         | 多线程和并发       | 介绍线程创建、共享状态、通道、锁和原子操作等并发编程技术   |
+| `17_smart_pointers.rs`         | 智能指针           | 介绍Box、Rc、Arc、RefCell等智能指针的使用和组合方式        |
 
 ## 如何运行示例代码
 

@@ -9,8 +9,8 @@ enum IpAddrKind {
 
 // 2. 枚举关联数据
 enum IpAddr {
-    V4(u8, u8, u8, u8),  // V4变体关联了4个u8类型的值
-    V6(String),          // V6变体关联了一个String类型的值
+    V4(u8, u8, u8, u8), // V4变体关联了4个u8类型的值
+    V6(String),         // V6变体关联了一个String类型的值
 }
 
 // 3. 枚举方法
@@ -41,45 +41,45 @@ fn main() {
     // 5. 创建枚举实例
     let four = IpAddrKind::V4;
     let six = IpAddrKind::V6;
-    
+
     // 传递枚举值给函数
     route(four);
     route(six);
-    
+
     // 6. 使用带关联数据的枚举
     let home = IpAddr::V4(127, 0, 0, 1);
     let loopback = IpAddr::V6(String::from("::1"));
-    
+
     // 7. 调用枚举方法
     let m1 = Message::Write(String::from("Hello, world!"));
     m1.call();
-    
+
     let m2 = Message::Move { x: 10, y: 20 };
     m2.call();
-    
+
     // 8. Option枚举的使用
     let some_number = Some(5);
     let some_string = Some("a string");
     let absent_number: Option<i32> = None;
-    
+
     println!("some_number包含值: {:?}", some_number);
     println!("some_string包含值: {:?}", some_string);
     println!("absent_number: {:?}", absent_number);
-    
+
     // 9. 模式匹配（Pattern Matching）
     // match 表达式允许我们根据值的不同变体执行不同的代码
     let coin = Coin::Quarter(UsState::Alaska);
     let value = value_in_cents(coin);
     println!("硬币的价值: {}美分", value);
-    
+
     // 10. 匹配Option<T>
     let five = Some(5);
     let six = plus_one(five);
     let none = plus_one(None);
-    
+
     println!("six: {:?}", six);
     println!("none: {:?}", none);
-    
+
     // 11. 匹配中的通配符和占位符
     let dice_roll = 9;
     match dice_roll {
@@ -88,19 +88,19 @@ fn main() {
         // 其他情况都执行这个分支
         other => move_player(other),
     }
-    
+
     // 12. if let 简洁控制流
     // 当我们只关心一个匹配模式时，可以使用if let
     let config_max = Some(3u8);
     if let Some(max) = config_max {
         println!("配置最大值为: {}", max);
     }
-    
+
     // if let与else结合使用
     let mut count = 0;
     let coin = Coin::Dime;
     if let Coin::Quarter(state) = coin {
-        println!("来自{}州的25美分硬币!", state);
+        println!("来自{:?}州的25美分硬币!", state);
     } else {
         count += 1;
         println!("不是25美分硬币，计数增加到: {}", count);
@@ -120,10 +120,11 @@ enum Coin {
     Penny,
     Nickel,
     Dime,
-    Quarter(UsState),  // Quarter变体关联了一个UsState枚举
+    Quarter(UsState), // Quarter变体关联了一个UsState枚举
 }
 
 // 定义美国州枚举
+#[derive(Debug)]
 enum UsState {
     Alabama,
     Alaska,
@@ -139,7 +140,7 @@ fn value_in_cents(coin: Coin) -> u8 {
         Coin::Quarter(state) => {
             println!("来自{:?}州的25美分硬币!", state);
             25
-        },
+        }
     }
 }
 
