@@ -67,7 +67,7 @@ async fn async_block_example() -> String {
         "异步块完成"
     };
 
-    future.await
+    future.await.to_string()
 }
 
 // 3. Future trait简介
@@ -119,7 +119,7 @@ async fn spawn_task_example() -> String {
     });
 
     // 可以等待任务完成并获取结果
-    handle.await.unwrap()
+    handle.await.unwrap().to_string()
 }
 
 // 5. 异步IO操作
