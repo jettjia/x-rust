@@ -1,0 +1,82 @@
+[package]
+name = "rust-learning-resources"
+version = "0.1.0"
+edition = "2021"
+
+# 描述
+description = "Rust语言学习资源，包含各种核心概念和语法特性的示例代码"
+license = "MIT"
+
+# 依赖
+[dependencies]
+# 异步编程相关依赖
+tokio = { version = "1", features = ["full"] }
+async-std = { version = "1.12.0", features = ["attributes"] }
+
+# 并行计算依赖（可选）
+rayon = "1.7.0"
+
+# 为每个示例文件创建一个可执行目标
+[[bin]]
+name = "01_variables"
+path = "01_variables.rs"
+
+[[bin]]
+name = "02_functions"
+path = "02_functions.rs"
+
+[[bin]]
+name = "03_flow_control"
+path = "03_flow_control.rs"
+
+[[bin]]
+name = "04_ownership"
+path = "04_ownership.rs"
+
+[[bin]]
+name = "05_structs"
+path = "05_structs.rs"
+
+[[bin]]
+name = "06_enums_pattern_matching"
+path = "06_enums_pattern_matching.rs"
+
+[[bin]]
+name = "07_collections"
+path = "07_collections.rs"
+
+[[bin]]
+name = "08_packages_modules"
+path = "08_packages_modules.rs"
+
+[[bin]]
+name = "09_error_handling"
+path = "09_error_handling.rs"
+
+[[bin]]
+name = "10_generics"
+path = "10_generics.rs"
+
+[[bin]]
+name = "11_traits"
+path = "11_traits.rs"
+
+[[bin]]
+name = "12_lifetimes"
+path = "12_lifetimes.rs"
+
+[[bin]]
+name = "13_async"
+path = "13_async.rs"
+
+[[bin]]
+name = "14_macros"
+path = "14_macros.rs"
+
+[[bin]]
+name = "15_unsafe"
+path = "15_unsafe.rs"
+
+[[bin]]
+name = "16_multithreading"
+path = "16_multithreading.rs"
