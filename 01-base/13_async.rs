@@ -1,160 +1,64 @@
-// 13_async.rs - 介绍Rust中的异步编程
+// async_simple_example.rs - Rust异步编程示例
 
-// Rust的异步编程主要通过async/await语法和Future trait实现
-// 要使用异步功能，我们需要引入tokio或async-std等运行时
-
-// 已在Cargo.toml中添加了tokio依赖
+// 引入必要的异步运行时
 use tokio::time::{sleep, Duration};
 
+// 主函数
 fn main() {
-    // 在实际项目中，我们会使用异步运行时来执行异步代码
-    // 例如使用tokio运行时：
+    // 创建并启动tokio运行时，运行我们的异步主函数
     tokio::runtime::Runtime::new()
         .unwrap()
         .block_on(async_main());
-
-    println!("异步编程示例执行完毕");
 }
 
-// 1. 定义异步函数
-// 异步函数使用async关键字标记，返回Future类型
+// 异步主函数，使用async关键字标记
 async fn async_main() {
-    println!("开始执行异步任务");
+    println!("=== 异步编程简单示例 ===");
 
-    // 调用另一个异步函数并等待其完成
-    let result = do_something_async().await;
+    // 1. 基础的异步函数调用
+    println!("\n1. 调用单个异步函数：");
+    let result = simple_async_task(1).await;
     println!("异步任务结果: {}", result);
 
-    // 并发执行多个异步任务
-    let future1 = do_something_async();
-    let future2 = do_something_else_async();
+    // 2. 并发执行多个异步任务
+    println!("\n2. 并发执行多个异步任务：");
+    let task1 = simple_async_task(1);
+    let task2 = simple_async_task(2);
+    let task3 = simple_async_task(3);
 
-    // 等待两个任务都完成
-    let (result1, result2) = tokio::join!(future1, future2);
-    println!("并发任务结果: {}, {}", result1, result2);
+    // 等待所有任务完成并获取结果
+    let (result1, result2, result3) = tokio::join!(task1, task2, task3);
 
-    // 演示异步块
-    let async_block_result = async_block_example().await;
-    println!("异步块结果: {}", async_block_result);
+    println!("所有任务完成，结果: {}, {}, {}", result1, result2, result3);
 
-    // 演示spawn创建独立任务
-    let spawn_result = spawn_task_example().await;
-    println!("spawn任务结果: {}", spawn_result);
+    // 3. 演示异步代码的非阻塞特性
+    println!("\n3. 演示异步代码的非阻塞特性：");
+    let fast_task = simple_async_task_with_delay(1, 1); // 1秒后完成
+    let slow_task = simple_async_task_with_delay(2, 3); // 3秒后完成
+
+    // 先等待快任务完成
+    let fast_result = fast_task.await;
+    println!("快任务已完成: {}", fast_result);
+    println!("此时慢任务仍在运行...");
+
+    // 等待慢任务完成
+    let slow_result = slow_task.await;
+    println!("慢任务也已完成: {}", slow_result);
+
+    println!("\n=== 示例执行完毕 ===");
 }
 
-async fn do_something_async() -> String {
-    println!("开始执行第一个异步操作");
-    // 模拟耗时操作
+// 一个简单的异步函数，接收一个ID参数并返回一个字符串
+async fn simple_async_task(id: u32) -> String {
+    println!("异步任务 {} 开始执行", id);
+    // 模拟一些异步工作（例如网络请求或文件IO）
     sleep(Duration::from_secs(1)).await;
-    println!("第一个异步操作完成");
-    String::from("操作1完成")
+    format!("任务 {} 已完成", id)
 }
 
-async fn do_something_else_async() -> String {
-    println!("开始执行第二个异步操作");
-    // 模拟耗时操作
-    sleep(Duration::from_secs(2)).await;
-    println!("第二个异步操作完成");
-    String::from("操作2完成")
+// 一个带延迟的异步函数，接收任务ID和延迟时间（秒）
+async fn simple_async_task_with_delay(id: u32, delay_seconds: u64) -> String {
+    println!("异步任务 {} 开始执行，将持续 {} 秒", id, delay_seconds);
+    sleep(Duration::from_secs(delay_seconds)).await;
+    format!("耗时任务 {} 已完成（耗时 {} 秒）", id, delay_seconds)
 }
-
-// 2. 异步块
-// 异步块是使用async关键字创建的表达式，返回Future
-async fn async_block_example() -> String {
-    let future = async {
-        println!("在异步块中执行");
-        sleep(Duration::from_secs(1)).await;
-        "异步块完成"
-    };
-
-    future.await.to_string()
-}
-
-// 3. Future trait简介
-// Future表示一个异步计算的值
-// Future trait的简化定义如下：
-/*
-trait Future {
-    type Output;
-    fn poll(
-        self: Pin<&mut Self>,
-        cx: &mut Context<'_>
-    ) -> Poll<Self::Output>;
-}
-*/
-
-// 其中Poll是一个枚举，表示Future的状态：
-/*
-enum Poll<T> {
-    Ready(T),      // 计算完成，值为T
-    Pending,       // 计算尚未完成，需要再次poll
-}
-*/
-
-// 4. 处理并发任务的几种方式
-// a. 使用join!宏并发执行多个任务并等待所有任务完成
-// 已在async_main中演示
-
-// b. 使用select!宏等待多个任务中的任何一个完成
-// 示例：
-/*
-async fn select_example() {
-    let task1 = do_something_async();
-    let task2 = do_something_else_async();
-
-    tokio::select! {
-        result = task1 => println!("任务1先完成: {}", result),
-        result = task2 => println!("任务2先完成: {}", result),
-    }
-}
-*/
-
-// c. 使用spawn创建独立的异步任务
-async fn spawn_task_example() -> String {
-    let handle = tokio::spawn(async {
-        println!("开始执行独立的spawn任务");
-        sleep(Duration::from_secs(1)).await;
-        println!("独立任务完成");
-        "任务完成"
-    });
-
-    // 可以等待任务完成并获取结果
-    handle.await.unwrap().to_string()
-}
-
-// 5. 异步IO操作
-// async fn read_file_async(path: &str) -> Result<String, std::io::Error> {
-//     use tokio::fs::File;
-//     use tokio::io::AsyncReadExt;
-//
-//     let mut file = File::open(path).await?;
-//     let mut contents = String::new();
-//     file.read_to_string(&mut contents).await?;
-//     Ok(contents)
-// }
-
-// 6. 异步编程的优势
-// - 高效处理IO密集型任务，不需要为每个连接创建线程
-// - 代码结构清晰，接近同步代码的风格
-// - 避免了回调地狱
-// - 提高系统吞吐量
-
-// 7. 异步编程的注意事项
-// - 阻塞操作会阻塞整个执行器，应使用对应的异步版本
-// - 要注意管理任务的生命周期，避免泄漏
-// - 理解并正确使用await点
-// - 注意处理错误，特别是在异步链中
-
-// 8. 其他异步运行时
-// 除了tokio，Rust还有其他异步运行时，如async-std
-// 已在Cargo.toml中添加了async-std依赖
-
-// 使用async-std运行时的示例：
-/*
-#[async_std::main]
-async fn main() {
-    println!("使用async-std运行时");
-    // 异步代码
-    async_std::task::sleep(std::time::Duration::from_secs(1)).await;
-    println!("异步任务完成");
-}*/

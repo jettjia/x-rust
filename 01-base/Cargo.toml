@@ -50,6 +50,10 @@ name = "08_packages_modules"
 path = "08_packages_modules.rs"
 
 [[bin]]
+name = "async_simple_example"
+path = "async_simple_example.rs"
+
+[[bin]]
 name = "09_error_handling"
 path = "09_error_handling.rs"
 

@@ -4,6 +4,7 @@ fn main() {
     // 1. Vector - 动态数组，可以存储多个相同类型的值
     // 创建Vector
     let v1: Vec<i32> = Vec::new();
+    println!("v1: {:?}", v1);
 
     // 使用vec!宏创建Vector并初始化
     let v2 = vec![1, 2, 3, 4, 5];
