@@ -6,25 +6,29 @@
 
 每个文件都按照主题进行了分类，并使用数字序号命名，以便按照建议的学习顺序进行阅读和实践。
 
-| 文件名                       | 主题               | 内容简介                                                   |
-| ---------------------------- | ------------------ | ---------------------------------------------------------- |
-| `01_basic_syntax.c`          | 基础语法           | 介绍C语言的基本语法、程序结构、编译和运行                  |
-| `02_variables_datatypes.c`   | 变量和数据类型     | 介绍C语言的变量声明、初始化、基本数据类型和常量            |
-| `03_operators_expressions.c` | 运算符和表达式     | 介绍C语言的算术、关系、逻辑、位运算和表达式求值            |
-| `04_control_flow.c`          | 控制流             | 介绍if-else、switch-case、循环语句(while、for、do-while)   |
-| `05_functions.c`             | 函数               | 介绍函数定义、参数传递、返回值、递归和函数声明             |
-| `06_arrays.c`                | 数组               | 介绍一维数组、多维数组、数组初始化和数组操作               |
-| `07_pointers.c`              | 指针               | 介绍指针概念、指针运算、指针与数组的关系                   |
-| `08_strings.c`               | 字符串             | 介绍字符数组、字符串操作函数、字符串处理技巧               |
-| `09_structures_unions.c`     | 结构体和共用体     | 介绍结构体定义、嵌套结构体、共用体和枚举类型               |
-| `10_memory_management.c`     | 内存管理           | 介绍动态内存分配(malloc、calloc、realloc、free)和内存泄漏  |
-| `11_file_handling.c`         | 文件处理           | 介绍文件打开、读写、关闭和文件操作函数                     |
-| `12_preprocessor.c`          | 预处理器           | 介绍预处理指令(#include、#define、条件编译等)              |
-| `13_error_handling.c`        | 错误处理           | 介绍错误码、errno、perror和exit函数                        |
-| `14_standard_library.c`      | 标准库函数         | 介绍常用的标准库函数(数学、字符串、时间等)                 |
-| `15_multithreading.c`        | 多线程编程         | 介绍POSIX线程(pthread)的创建、同步和通信                   |
-| `16_system_calls.c`          | 系统调用           | 介绍基本的UNIX/Linux系统调用                               |
-| `17_c_vs_cpp.c`              | C与C++比较         | 介绍C和C++的主要区别和兼容性                               |
+| 文件名                       | 主题             | 内容简介                                                  |
+| ---------------------------- | ---------------- | --------------------------------------------------------- |
+| `01_basic_syntax.c`          | 基础语法         | 介绍C语言的基本语法、程序结构、编译和运行                 |
+| `02_variables_datatypes.c`   | 变量和数据类型   | 介绍C语言的变量声明、初始化、基本数据类型和常量           |
+| `03_operators_expressions.c` | 运算符和表达式   | 介绍C语言的算术、关系、逻辑、位运算和表达式求值           |
+| `04_control_flow.c`          | 控制流           | 介绍if-else、switch-case、循环语句(while、for、do-while)  |
+| `05_functions.c`             | 函数             | 介绍函数定义、参数传递、返回值、递归和函数声明            |
+| `06_arrays.c`                | 数组             | 介绍一维数组、多维数组、数组初始化和数组操作              |
+| `07_pointers.c`              | 指针             | 介绍指针概念、指针运算、指针与数组的关系                  |
+| `08_structures_unions.c`     | 结构体和共用体   | 介绍结构体定义、嵌套结构体、共用体和枚举类型              |
+| `09_file_handling.c`         | 文件处理         | 介绍文件打开、读写、关闭和文件操作函数                    |
+| `10_dynamic_memory.c`        | 动态内存管理     | 介绍动态内存分配(malloc、calloc、realloc、free)和内存泄漏 |
+| `11_preprocessor.c`          | 预处理器         | 介绍预处理指令(#include、#define、条件编译等)             |
+| `12_command_line_args.c`     | 命令行参数       | 介绍命令行参数处理、argc和argv的使用                      |
+| `13_error_handling.c`        | 错误处理         | 介绍错误码、errno、perror和exit函数                       |
+| `14_standard_library.c`      | 标准库函数       | 介绍常用的标准库函数(数学、字符串、时间等)                |
+| `15_makefile_example.c`      | Makefile项目构建 | 展示如何使用Makefile编译和管理C语言项目                   |
+| `16_multi_threading.c`       | 多线程编程       | 介绍POSIX线程(pthread)的创建、同步和通信                  |
+| `17_c_vs_cpp.c`              | C与C++比较       | 介绍C和C++的主要区别和兼容性                              |
+| `18_comprehensive_example.c` | 综合示例         | 学生管理系统，综合应用C语言的各个知识点                   |
+| `helper.c`                   | 辅助函数实现     | 实现辅助计算函数                                          |
+| `helper.h`                   | 辅助函数头文件   | 声明辅助计算函数                                          |
+| `Makefile`                   | 项目构建配置     | 用于编译和管理项目的Makefile配置                          |
 
 ## 如何运行示例代码
 
@@ -59,7 +63,7 @@ brew install gcc
    ```bash
    # Linux/macOS
    ./01_basic_syntax
-   
+
    # Windows
    01_basic_syntax.exe
    ```
